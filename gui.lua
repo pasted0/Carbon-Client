@@ -1,3 +1,4 @@
+--[[
 shared.VapeIndependent = true
 getgenv().vape = loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua', true))()
 local vape = getgev().vape
@@ -11,3 +12,6 @@ end
 
 vape.Place = foundplace or "Games/Universal.lua"
 vape:Init()
+]]--
+
+print("hello")
