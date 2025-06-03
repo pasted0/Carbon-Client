@@ -1,4 +1,4 @@
-local vape = getgenv().vape
+local vape = shared.vape
 local category = vape:CreateCategory({
 	Name = 'Combat',
 	Icon = getcustomasset('newvape/assets/combaticon.png'),
