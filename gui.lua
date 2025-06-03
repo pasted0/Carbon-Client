@@ -5,10 +5,14 @@ local vape = loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDa
 local foundplace = nil
 for _,filename in next, listfiles("CarbonClient/Games") do
   if filename:find(tostring(game.PlaceId)) then 
-    foundplace = "Games/"..tostring(game.PlaceId)
-    return
+    foundplace = "CarbonClient/Games/"..tostring(game.PlaceId)
+    break
   end
 end
 
-vape.Place = foundplace or "Games/Universal.lua"
-vape:Init()
+if foundplace then
+  loadstring(readfile(foundplace))()
+  else
+    loadstring(readfile("CarbonClient/Games/Universal.lua"))()
+end
+
