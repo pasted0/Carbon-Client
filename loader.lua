@@ -8,34 +8,9 @@ local function getFile(FileName)
             ["Accept"] = "application/vnd.github.v3.raw"
         }
     }
-    return request(options)
+    return request(options).Body
 end
 
-local function getFolder(FolderName)
-    local options = {
-        Method = 'GET',
-        Url = "https://api.github.com/repos/pasted0/Carbon-Client/contents/"..FolderName,
-        Headers = {
-            ["Accept"] = "application/vnd.github.v3+json"
-        }
-    }
-    local res = request(options)
-    if res and res.Body then
-        local http = cloneref(game:GetService("HttpService"))
-        local data = http:JSONDecode(res.Body)
-        local contents = {}
-        for _, item in next, data do
-            contents[#contents + 1] = {
-                name = item.name,
-                path = item.path,
-                type = item.type,
-                download_url = item.download_url
-            }
-        end
-        return contents
-    end
-    return {}
-end
 
 local function isfile(file)
     local suc, res = pcall(function() return readfile(file) end)
@@ -52,18 +27,20 @@ if not isfolder("CarbonClient") then
 end
 
 if not isfile("CarbonClient/loader.lua") then
-    writefile("CarbonClient/loader.lua", getFile("loader.lua").Body)
+    writefile("CarbonClient/loader.lua", getFile("loader.lua"))
 end
 
 if not isfile("CarbonClient/gui.lua") then
-    writefile("CarbonClient/gui.lua", getFile("gui.lua").Body)
+    writefile("CarbonClient/gui.lua", getFile("gui.lua"))
 end
 
-if not isfolder("CarbonClient/Games") then 
-  makefolder("CarbonClient/Games")
-  for _, file in next, getFolder("Games") do
-    writefile("CarbonClient/Games/"..file.name, getFile(file.path))
-  end
+if not isfolder("CarbonClient/Games") then
+    makefolder("CarbonClient/Games")
+    local suc, err = pcall(function()
+      writefile("CarbonClient/Games/"..game.PlaceId..".lua", getFile("Games/"..game.PlaceId..".lua"))
+    end)
 end
 
-dofile("CarbonClient/gui.lua")
+writefile("CarbonClient/_VERSION", "@CarbonClient 1.0, all rights reserved.")
+task.wait(1)
+loadstring(readfile("CarbonClient/gui.lua"))()
