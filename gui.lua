@@ -4,7 +4,7 @@ local vape = getgev().vape
 local foundplace = nil
 for _,filename in next, listfiles("CarbonClient/Games") do
   if filename:find(tostring(game.PlaceId)) then 
-    foundplace = true
+    foundplace = "Games/"..tostring(game.PlaceId)
     return
   end
 end
